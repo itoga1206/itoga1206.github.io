@@ -12,7 +12,20 @@
     <script type="text/javascript">
       /*クッキーのカウンタ*/
 
+   let Is_count = localStorage.getItem("Is_count");
+   if(Is_count){
+     cookie_count = parseInt(Is_count);
+   } else {
+     cookie_count = 0;
+   }
+  setInterval(save_action,1000);
+  function save_action() {
+  localStorage.setItem("Is_count",cookie_count);
+}
+
       localStorage.setItem('c_count', 0);
+
+      localStorage.getItem('c_count')
       cookie_count = parseInt(localStorage.getItem('c_count', 0));
 
       function cookieClick(num) {
