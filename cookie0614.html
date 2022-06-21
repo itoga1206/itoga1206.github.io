@@ -43,6 +43,28 @@
         cookie_count = 0;
       }
 
+     class Building {
+
+       constructor(time,num){
+         this.event_ids = [];
+         this.Interval_time = time;
+         this.add_num = num;
+       }
+       count_up(num){
+         count+=num
+       }
+       buy(){
+         let self = this;
+         let return_id = setInterval(function(){
+           self.count_up(self.add_num);
+         },1000);
+         this.event_ids.push(return_id);
+       }
+       sell(){
+         let return_id = this.event_ids.pop();
+         clearInterval(return_id);
+       }
+     }
       setInterval(save_action,1000);
       function save_action() {
         localStorage.setItem("ls_count",cookie_count);
@@ -58,6 +80,8 @@
         cookie_count= cookie_count + num;
         count_text.textContent = cookie_count;
       }
+
+      let eg0
 
       function cursor() {
         if(cookie_count >=10){
@@ -147,8 +171,6 @@
 
       </div>
     </div>
-
-
 
   </body>
 </html>
