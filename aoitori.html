@@ -68,28 +68,8 @@ word-break: break-all;
     <div class="container">
       <div id="timeline">
         <div class="tweet">
-          <div class="icon">
-
-            <img src="./egg.png" alt="">
-          </div>
-          <div class="tweet_box">
-
-            <div class="username">
-              ユーザ名
-              <span class="name">@mnb</span>
-              <span class="date">2022/7/5</span>
-            </div>
-
-            <div class="text">
-                ツイートをしてみよう！
-
-              <div class="action">
-                           <span class="icon_chat">0</span>
-                           <span class="icon_fav">0</span>
-                           <span class="icon_share">0</span>
-                           <span class="icon_res">0</span>
-                        </div>
-
+           <input type="text" id="input_text" placeholder="ここに入力してね！"name="" value="" />
+               <button onclick="form_tweet()" type="submit" >送信</button>
             </div>
         </div>
       </div>
@@ -98,44 +78,65 @@ word-break: break-all;
    <script type="text/javascript">
 
     let timeline = document.getElementById('timeline');
-    let tweets =[{"text":"こんにちは","username":"hinako"},
-                 {"text":"こんばんは","username":"hinako"},
-                 {"text":"願い","username":"hinako"},
-                 {"text":"叶う","username":"hinako"}];
+
+async function post_tweet(text,name,username){
+    let send_data = "?name=" + name + "username=" + username + "&text=" + text;
+    let res_data = await(await fetch("./tweet.rb+ send_data")).text();
+      if (res_data  !="OK"){
+        alert(res_data);
+      }
+};
 
 
-    tweets.forEach((tweet, i) => {
-      let template = `  <div class="tweet">
-          <div class="icon">
+    let tweets =[{"text":"こんにちは","username":"青汁"},
+                 {"text":"こんばんは","username":"青汁"},
+                 {"text":"願い","username":"青汁"},
+                 {"text":"叶った","username":"青汁"}];
 
-            <img src="./egg.png" alt="">
-          </div>
-          <div class="tweet_box">
+    viewTweet();
 
-            <div class="username">
-              ${tweet.username}
-              <span class="name">@mnb</span>
-              <span class="date">2022/7/5</span>
-            </div>
+    async function viewTweet(){
+      let tweets = await getJson();
+      appendTweet(tweets);
+}
 
-            <div class="text">
-              ${tweet.text}
 
-            </div>
-            <div class="action">
-                         <span class="icon_chat">0</span>
-                         <span class="icon_fav">0</span>
-                         <span class="icon_share">0</span>
-                         <span class="icon_res">0</span>
-                      </div>`
-      timeline.innerHTML = timeline.innerHTML + template;
-    });
+    async function getJson() {
+    let response = await (await fetch("http://192.168.0.90/timeline.json")).json()
+    return response
+}
 
-    array.forEach((n) => {
-        console.log(n)
-    });
+appendTweet(tweets);
+
+     function appendTweet(tweets){
+       tweets.forEach((tweet, i) => {
+         let template = `  <div class="tweet">
+             <div class="icon">
+
+               <img src="./egg.png" alt="">
+             </div>
+             <div class="tweet_box">
+
+               <div class="username">
+                 ${tweet.username}
+                 <span class="name">@mnb</span>
+                 <span class="date">2022/7/12</span>
+               </div>
+
+               <div class="text">
+                 ${tweet.text}
+
+               </div>
+               <div class="action">
+                            <span class="icon_chat">0</span>
+                            <span class="icon_fav">0</span>
+                            <span class="icon_share">0</span>
+                            <span class="icon_res">0</span>
+                         </div>`
+         timeline.innerHTML = timeline.innerHTML + template;
+       });
+     }
 
    </script>
-
   </body>
 </html>
