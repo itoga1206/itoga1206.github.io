@@ -68,30 +68,38 @@ word-break: break-all;
     <div class="container">
       <div id="timeline">
         <div class="tweet">
-           <input type="text" id="input_text" placeholder="ここに入力してね！"name="" value="" />
+           <input type="text" id="input_text" placeholder="ここに入力してね！" />
                <button onclick="form_tweet()" type="submit" >送信</button>
             </div>
         </div>
       </div>
-    </div>
 
    <script type="text/javascript">
 
     let timeline = document.getElementById('timeline');
+  //フォームの内容を書き込む
+function form_tweet(){
+  let input_text = document.getElementById('input_text');
+  if (input_text.value != ""){
+    post_tweet(input_text.value,"name","username");
+    input_text.value = "";
+  }
+}
 
+//書き込み処理
 async function post_tweet(text,name,username){
     let send_data = "?name=" + name + "username=" + username + "&text=" + text;
-    let res_data = await(await fetch("./tweet.rb+ send_data")).text();
+    let res_data = await(await fetch("./tweet.rb + send_data")).text();
       if (res_data  !="OK"){
         alert(res_data);
       }
 };
 
 
-    let tweets =[{"text":"こんにちは","username":"青汁"},
-                 {"text":"こんばんは","username":"青汁"},
-                 {"text":"願い","username":"青汁"},
-                 {"text":"叶った","username":"青汁"}];
+    let tweets =[{"text":"こんにちは","username":"程よく焼けたおもち"},
+                 {"text":"こんばんは","username":"程よく焼けたおもち"},
+                 {"text":"願い","username":"程よく焼けたおもち"},
+                 {"text":"叶った","username":"程よく焼けたおもち"}];
 
     viewTweet();
 
@@ -113,13 +121,13 @@ appendTweet(tweets);
          let template = `  <div class="tweet">
              <div class="icon">
 
-               <img src="./egg.png" alt="">
+               <img src="./mochi.jpg" alt="">
              </div>
              <div class="tweet_box">
 
                <div class="username">
                  ${tweet.username}
-                 <span class="name">@mnb</span>
+                 <span class="name">@omochi</span>
                  <span class="date">2022/7/12</span>
                </div>
 
