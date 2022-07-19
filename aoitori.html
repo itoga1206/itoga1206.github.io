@@ -108,15 +108,20 @@ async function post_tweet(text,name,username){
       appendTweet(tweets);
 }
 
+updateTweet();
 
-    async function getJson() {
-    let response = await (await fetch("http://192.168.0.90/timeline.json")).json()
+    async function updateTweet() {
+    let array = await (await fetch("http://192.168.0.90/timeline.json")).json()
     return response
 }
 
 appendTweet(tweets);
 
      function appendTweet(tweets){
+       let old_tweets = document.getElementsByClassName("tweet");
+       while(old_tweets.length>2){
+         old_tweets.item(1).remove();
+       }
        tweets.forEach((tweet, i) => {
          let template = `  <div class="tweet">
              <div class="icon">
@@ -126,13 +131,13 @@ appendTweet(tweets);
              <div class="tweet_box">
 
                <div class="username">
-                 ${tweet.username}
+                 ${escapeText(weet.username)}
                  <span class="name">@omochi</span>
                  <span class="date">2022/7/12</span>
                </div>
 
                <div class="text">
-                 ${tweet.text}
+                 ${escapeText(weet.text)}
 
                </div>
                <div class="action">
@@ -140,9 +145,19 @@ appendTweet(tweets);
                             <span class="icon_fav">0</span>
                             <span class="icon_share">0</span>
                             <span class="icon_res">0</span>
+                            </div>
+                            </div>
                          </div>`
          timeline.innerHTML = timeline.innerHTML + template;
        });
+     }
+
+     function escapeText(text) {
+       let element = document.createElement("div");
+         element.textContent = text;
+       return element.innerHTML.replace(/\n/g,"<br>");
+}
+
      }
 
    </script>
