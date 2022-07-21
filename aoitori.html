@@ -59,6 +59,20 @@ word-break: break-all;
   background-size: contain;
   background-repeat: no-repeat;
 }
+.btn{
+    display: inline;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(29, 155, 240);
+    color: #fff;
+    font-weight: bold;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
 
     </style>
     <meta charset="utf-8">
@@ -69,7 +83,7 @@ word-break: break-all;
       <div id="timeline">
         <div class="tweet">
            <input type="text" id="input_text" placeholder="ここに入力してね！" />
-               <button onclick="form_tweet()" type="submit" >送信</button>
+               <button class ="btn" onclick="form_tweet()" type="submit" >送信</button>
             </div>
         </div>
       </div>
@@ -88,40 +102,37 @@ function form_tweet(){
 
 //書き込み処理
 async function post_tweet(text,name,username){
-    let send_data = "?name=" + name + "username=" + username + "&text=" + text;
-    let res_data = await(await fetch("./tweet.rb + send_data")).text();
+    let send_data = "?name=" + name + "&username=" + username + "&text=" + text;
+    let res_data = await(await fetch("./tweet.rb" + send_data)).text();
       if (res_data  !="OK"){
         alert(res_data);
       }
 };
-
-
-    let tweets =[{"text":"こんにちは","username":"程よく焼けたおもち"},
-                 {"text":"こんばんは","username":"程よく焼けたおもち"},
-                 {"text":"願い","username":"程よく焼けたおもち"},
-                 {"text":"叶った","username":"程よく焼けたおもち"}];
 
     viewTweet();
 
     async function viewTweet(){
       let tweets = await getJson();
       appendTweet(tweets);
+      setTimeout(viewTweet,5000);
 }
 
-updateTweet();
 
-    async function updateTweet() {
-    let array = await (await fetch("http://192.168.0.90/timeline.json")).json()
-    return response
+    async function getJson() {
+    let response = await (await fetch("http://192.168.0.90/timeline.json")).json();
+    return response;
 }
 
 appendTweet(tweets);
 
      function appendTweet(tweets){
        let old_tweets = document.getElementsByClassName("tweet");
-       while(old_tweets.length>2){
+       while(old_tweets.length>1){
          old_tweets.item(1).remove();
        }
+
+      let tmp_tweets = "";
+
        tweets.forEach((tweet, i) => {
          let template = `  <div class="tweet">
              <div class="icon">
@@ -131,13 +142,13 @@ appendTweet(tweets);
              <div class="tweet_box">
 
                <div class="username">
-                 ${escapeText(weet.username)}
+                 ${escapeText(tweet.username)}
                  <span class="name">@omochi</span>
                  <span class="date">2022/7/12</span>
                </div>
 
                <div class="text">
-                 ${escapeText(weet.text)}
+                 ${escapeText(tweet.text)}
 
                </div>
                <div class="action">
@@ -145,11 +156,12 @@ appendTweet(tweets);
                             <span class="icon_fav">0</span>
                             <span class="icon_share">0</span>
                             <span class="icon_res">0</span>
-                            </div>
-                            </div>
-                         </div>`
-         timeline.innerHTML = timeline.innerHTML + template;
+                        </div>
+                    </div>
+               </div>`
+            tmp_tweets = tmp_tweets + template;
        });
+          timeline.innerHTML = timeline.innerHTML + tmp_tweets;
      }
 
      function escapeText(text) {
@@ -158,7 +170,6 @@ appendTweet(tweets);
        return element.innerHTML.replace(/\n/g,"<br>");
 }
 
-     }
 
    </script>
   </body>
