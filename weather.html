@@ -25,10 +25,9 @@
 
       xhr.onreadystatechange = function() {
         if(xhr.readyState === 4 && xhr.status === 200) {
-          let weathercode = JSON.parse(xhr.responseText);
-
-          let date_array = weather_date.daily.time;
-          let weather_array = weather_date.daily.weathercode;
+          let weather_data = JSON.parse(xhr.responseText);
+          let date_array = weather_data.daily.time;
+          let weather_array = weather_data.daily.weathercode;
 
           createWetherTable(date_array,weather_array);
         }
@@ -38,8 +37,6 @@
 function createWetherTable(date_array,weather_array) {
   let t_date =document.getElementById('date');
   let t_weather =document.getElementById('weather');
-}
-
 
      date_array.forEach(function(date,i){
       t_date.innerHTML = t_date.innerHTML +"<th>"+ date +"</th>";
